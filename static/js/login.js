@@ -34,28 +34,14 @@ formLogin?.addEventListener('submit', async (event) => {
 
     if(rol == "admin"){
       window.location.href = '/addProducts'
+    }else if(rol == "premium"){
+      window.location.href= '/userPremium'
     }else{
       window.location.href = '/productos'
     }
+    
   
 });
 
 
-/*
-document.getElementById('btnRegister').addEventListener('click', newCarrito)
-function newCarrito(e) {
-
-    fetch('http://localhost:8080/api/carts', {
-        method: 'POST'
-    })
-        .then(resp => resp.json())
-        .then(data => {
-            const newID = data._id
-            console.log(newID)
-            localStorage.setItem('carrito', JSON.stringify(newID))
-            window.location = '/register'
-        })
-  
-}
-*/
 

@@ -39,6 +39,12 @@ webRouter.get('/addProducts', (req, res) => {
   })
 })
 
+webRouter.get('/userPremium', (req, res) => {
+  res.render('userPremium.handlebars', {
+    pageTitle: 'userPremium'
+  })
+})
+
 webRouter.get('/productos', (req, res) => {
   res.render('productos.users.handlebars',{ titulo: 'Productos' })
 })

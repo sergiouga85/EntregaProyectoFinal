@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { randomUUID } from 'crypto'
 import mongoosePaginate from 'mongoose-paginate-v2'
+import { usersDao } from '../dao/index.js';
 
 const productSchema = new Schema ({
     _id: { type: String, default: randomUUID},
@@ -11,7 +12,8 @@ const productSchema = new Schema ({
     status: { type: Boolean, default: true },
     stock: { type: Number, require: true },
     category: { type: String, require: true },
-    thumbnail: { type: String, default: '' }
+    thumbnail: { type: String, default: '' },
+    owner: { type: String, ref: 'users' } // Puedes cambiar el valor predeterminado según tus necesidades
 }, {
     strict: 'throw',
     versionKey: false,
@@ -75,8 +77,10 @@ export class ProductDao {
     };
 
     // Crear un nuevo producto
-    async crearProducto(nuevoProductoData){
+    async crearProducto(usuarioId,nuevoProductoData){
         try {
+            // Asigna el propietario al ID del usuario premium
+            nuevoProductoData.owner = usuarioId;
             const nuevoProducto = await Producto.create(nuevoProductoData);
             return nuevoProducto;
         } catch (error) {
@@ -85,27 +89,52 @@ export class ProductDao {
     };
 
     // Actualizar un producto por ID
-    async actualizarProducto(productoId, newData){
+    async  actualizarProducto(productoId, usuarioId, newData) {
         try {
-            if (newData.code) {
-                throw new Error('No se puede modificar el código del producto');
-            }
-
-            const updProducto = await Producto.findByIdAndUpdate(
-                productoId,
-                { $set: newData },
-                { new: true }
-            );
-
-            if (!updProducto) {
-                throw new Error(`El producto con id ${productoId} no se encontró`);
-            }
-
-            return updProducto;
+          // Verificar si el usuario es admin o premium antes de permitir la modificación
+          const usuario = await usersDao.findByIdUser(usuarioId);
+      
+          if (!usuario) {
+            throw new Error('Usuario no encontrado');
+          }
+      
+          if (!(usuario.rol === 'admin' || usuario.rol === 'premium')) {
+            throw new Error('No tienes permisos para modificar productos');
+          }
+      
+          // Verificar si el producto existe
+          const producto = await Producto.findById(productoId);
+      
+          if (!producto) {
+            throw new Error(`El producto con ID ${productoId} no se encontró`);
+          }
+      
+          // Verificar si el usuario tiene permisos para modificar este producto
+          if (!(usuario.rol === 'admin' || producto.owner.toString() === usuario._id)) {
+            throw new Error('No tienes permisos para modificar este producto');
+          }
+      
+          // Verificar si se intenta modificar el código del producto
+          if (newData.code) {
+            throw new Error('No se puede modificar el código del producto');
+          }
+      
+          // Actualizar el producto
+          const updProducto = await Producto.findByIdAndUpdate(
+            productoId,
+            { $set: newData },
+            { new: true }
+          );
+      
+          if (!updProducto) {
+            throw new Error(`El producto con ID ${productoId} no se encontró`);
+          }
+      
+          return updProducto;
         } catch (error) {
-            throw new Error(`Error al actualizar el producto por ID: ${error.message}`);
+          throw new Error(`Error al actualizar el producto por ID: ${error.message}`);
         }
-    };
+      }
 
     // Eliminar un producto por ID
     async  eliminarProducto(productoId){

@@ -1,5 +1,6 @@
-import {productDao} from '../dao/index.js';
+import {productDao, usersDao} from '../dao/index.js';
 import  {ProductService} from '../services/product.service.js';
+import { emailService } from '../services/email.service.js'
 
 // Obtener todos los productos paginados
 
@@ -55,6 +56,7 @@ export const obtenerProductoPorId = async (req, res) => {
     }
 };
 
+
 // Crear un nuevo producto
 export const crearProducto = async (req, res) => {
     try {
@@ -64,28 +66,66 @@ export const crearProducto = async (req, res) => {
         if (nuevoProductoData.price < 0) {
             return res.status(400).json({ message: 'El precio del producto no puede ser negativo.' });
         }
-        // Llamar al servicio para crear el producto
-        const nuevoProducto = await ProductService.crearProducto(nuevoProductoData);
+
+        // Lógica para obtener el usuario actual (asumiendo que esté almacenado en req.user)
+        const usuarioActual = req.user;
+        console.log(usuarioActual.rol)
+        // Lógica para verificar si el usuario tiene permisos para crear productos
+        if (usuarioActual.rol !== 'premium' && usuarioActual.rol !== 'admin') {
+            return res.status(403).json({ message: 'No tienes permisos para crear productos.' });
+        }
+
+        // Llamar al servicio para crear el producto y asignar el owner
+        const nuevoProducto = await ProductService.crearProducto(usuarioActual._id, nuevoProductoData);
         res.status(201).json(nuevoProducto);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: `Error en el controlador de productos: ${error.message}` });
     }
-}; 
+};
 
 // Actualizar un producto por ID
 export const actualizarProducto = async (req, res) => {
     try {
-        const updProducto = await productDao.actualizarProducto(req.params.pid, req.body);
+        const productoId = req.params.pid;
+        const usuarioId = req.user._id; // Suponiendo que tienes la información del usuario en el objeto req.user
+        const newData = req.body;
+        // Llama al DAO para actualizar el producto con las restricciones
+        const updProducto = await productDao.actualizarProducto(productoId, usuarioId, newData);
+        // Devuelve la respuesta con el producto actualizado
         res.json(updProducto);
     } catch (error) {
+        // Maneja los errores y envía una respuesta adecuada al cliente
         res.status(500).json({ message: error.message });
     }
 };
 
 // Eliminar un producto por ID
-export const eliminarProducto = async (req, res) => {
+/*export const eliminarProducto = async (req, res) => {
     try {
         const delProducto = await productDao.eliminarProducto(req.params.pid);
+        res.json(delProducto);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};*/
+
+
+export const eliminarProducto = async (req, res) => {
+    try {
+        const productoId = req.params.pid;
+        const delProducto = await productDao.eliminarProducto(productoId);
+
+        // Verificar si el propietario del producto es un usuario premium
+        const propietario = await usersDao.obtenerPropietarioProducto(productoId);
+        if (propietario && propietario.rol =='premium') {
+            // Enviar correo electrónico al propietario premium
+            await emailService.send(
+                propietario.email,
+                'Hola',
+                `${propietario.username}, tu producto ha sido eliminado.`,
+              );
+        }
+
         res.json(delProducto);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -65,6 +65,7 @@ export const deleteInactiveUsers = async (req, res, next) => {
         'Hola',
         'Le informamos que su cuenta ha sido eliminada por inactividad!',
       );
+      await usersDao.deleteUser(user._id)
     });
     // Por ahora, solo imprimiré en la consola los usuarios inactivos encontrados
     console.log('Usuarios inactivos encontrados:', usuariosInactivos);
@@ -115,6 +116,7 @@ export const obtenerUsuarios = async (req, res) =>{
   } catch (error) {
       res.status(500).json({ message: error.message });
   }
+
 }
 
 

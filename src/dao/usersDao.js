@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { randomUUID } from 'crypto';
 import { hasheadasSonIguales, hashear } from '../utils/criptografia.js';
+import {productDao} from '../dao/index.js'
 
 const schema = new Schema({
   _id: { type: String, default: randomUUID },
@@ -29,14 +30,15 @@ export const usersModel = model('users', schema);
 
 export class usersDAO  {
 
-  async  createUser(userData) {
+  async createUser(userData) {
     try {
-      userData.id= randomUUID()
+      userData._id = randomUUID()
       userData.password = hashear(userData.password)
       const user = await usersModel.create(userData)
       return user.toObject()
     } catch (error) {
-      throw new Error('Error creating user');
+      console.error('Error creating user:', error)
+      throw error // Lanzar el error real para que se maneje adecuadamente
     }
   };
 
@@ -87,7 +89,10 @@ export class usersDAO  {
 
   async findInactiveUsers(timeLimit) {
     try {
-      return await usersModel.find({ lastConnection: { $lt: timeLimit } }).lean();
+      return await usersModel.find(
+        { lastConnection: { $lt: timeLimit },
+          rol:{ $ne:'admin' }
+       }).lean();
     } catch (error) {
       throw new Error('Error finding inactive users');
     }
@@ -115,19 +120,21 @@ export class usersDAO  {
     }
   }
 
+  async findByIdUser(usuarioId) {
+    try {
+      // Verificar si el usuario es admin o premium antes de permitir la modificación
+      const usuario = await usersModel.findById(usuarioId);
+      return usuario
+    } catch (error) {
+      console.error(error.message);
+      throw new Error('Error finding user by email');
+    }
+  }
+
   async deleteUser(userId) {
     try {
-        // Buscar el usuario por su nombre de usuario
-        const user = await usersModel.findById(userId );
-
-        // Si el usuario no existe, lanzar un error
-        if (!user) {
-            throw new Error(`El usuario ${userId} no existe.`);
-        }
-
         // Eliminar el usuario de la base de datos
         await usersModel.findByIdAndDelete(userId);
-
         console.log(`Se ha eliminado el usuario ${userId} de la base de datos.`);
     } catch (error) {
         console.error('Error al eliminar el usuario:', error.message);
@@ -135,6 +142,30 @@ export class usersDAO  {
     }
   }
 
+  async obtenerPropietarioProducto(productoId) {
+    try {
+        // Buscar el producto por su ID y obtener su propietario
+        const producto = await productDao.obtenerProductoPorId(productoId);
+        
+        if (!producto) {
+            throw new Error(`El producto con id ${productoId} no se encontró`);
+        }
+
+        // Obtener el propietario del producto
+        const propietarioId = producto.owner;
+
+        // Buscar al propietario en la base de datos
+        const propietario = await usersModel.findById(propietarioId);
+
+        if (!propietario) {
+            throw new Error(`El propietario del producto con id ${productoId} no se encontró`);
+        }
+
+        return propietario;
+    } catch (error) {
+        throw new Error(`Error al obtener el propietario del producto: ${error.message}`);
+    }
+  }
 
 
 }
