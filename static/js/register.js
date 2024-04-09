@@ -28,7 +28,9 @@ formLogin?.addEventListener('submit', async event => {
           icon: "success",
           color: "write"
         });
-        window.location.href = '/login'
+        setTimeout(() => {
+          window.location.href = '/login';
+        },'3000');
     } else {
       // Manejar otros casos si es necesario
       console.log('La solicitud no fue exitosa. Código de respuesta:', res.status)
