@@ -1,0 +1,124 @@
+paths:
+  /api/carts:
+    get:
+      tags: 
+       - Carts
+      summary: Obtiene todos los carritos
+      responses:
+        "200":
+          description: Pedido ok, se obtiene el listado de carritos
+        "500":
+          description: Error interno del servidor
+    post:
+      tags: 
+       - Carts
+      summary: Crea un carrito - Solo para User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBody/Cart"
+      
+      responses:
+        "200":
+          description: Pedido ok, se crea el carrito
+        "403":
+          description: No tienes permisos para realizar esta acción
+        "404":
+          description: Datos ingresados inválidos
+        "500":
+          description: Error interno del servidor
+      
+  /api/products/{id}:
+    get:
+      tags: 
+       - Cart by ID
+      summary: Obtiene un carrito por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del carrito buscado
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se obtiene el carrito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#components/schemas/Cart'
+        "404":
+          description: Datos inválidos
+        "500":
+          description: Error interno del servidor
+    delete:
+      tags: 
+       - Cart by ID
+      summary: Elimina el carrito buscado
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del carrito buscado
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se elimina el carrito
+        "404":
+         description: Datos inválidos
+        "500":
+         description: Error interno del servidor
+  /api/carts/{id}/products/{pid}:
+    post:
+      tags:
+       - Añadir producto
+      summary: Añade el producto oor id al carrito
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del carrito buscado
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a agregar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se añade el producto al carrito
+        "404":
+         description: Datos inválidos
+        "500":
+         description: Error interno del servidor
+    delete:
+      tags:
+       - Eliminar producto del carrito
+      summary: Elimina el producto por id al carrito
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del carrito buscado
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a agregar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se elimina el producto al carrito
+        "404":
+         description: Datos inválidos
+        "500":
+         description: Error interno del servidor

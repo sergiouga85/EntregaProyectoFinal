@@ -1,3 +1,7 @@
+//const idCarrito = JSON.parse(localStorage.getItem('carrito'))
+//console.log(idCarrito)
+//document.getElementById('carritoID').value= idCarrito
+
 const formLogin = document.getElementById('register')
 
 formLogin?.addEventListener('submit', async event => {
@@ -24,10 +28,7 @@ formLogin?.addEventListener('submit', async event => {
           icon: "success",
           color: "write"
         });
-        setTimeout(() => {
-          window.location.href = '/login';
-        },'3000');
-        
+        window.location.href = '/login'
     } else {
       // Manejar otros casos si es necesario
       console.log('La solicitud no fue exitosa. Código de respuesta:', res.status)

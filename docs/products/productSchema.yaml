@@ -1,0 +1,92 @@
+components:
+  schemas:
+    products:
+      type: object
+      properties:
+        _id:
+          type: UUID
+          description: id del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: descripcion del producto
+        code:
+          type: string
+          description: código único del producto
+        price:
+          type: number
+          description: precio del producto en pesos argentinos
+        status:
+          type: string
+          description: default true
+        stock:
+          type: numer
+          description: cantidad del producto en stock
+        category:
+          type: string
+          description: categoría del producto
+        thumbnail:
+          type: string
+          description: ruta a la imagen del producto
+        owner:
+          type: string
+          description: referencia a la persona que creó el producto
+
+      example:
+        _id: 8f783597-aeec-42d4-8239-123d695586c3
+        title: Fuente Alimentacion Gadnic 30V 5A
+        description: Fuente de alimentación de laboratorio Gadnic 30v 5A
+        code: ACB234
+        price: 100000
+        status: true
+        stock: 20,
+        category: "Electrónica"
+        thumbnail: /images/fuente.jpg
+        owner: 9543a7b6-fe07-4447-b787-8fb4e38c0ddf
+        
+           
+  requestBody:
+    products:
+      type: object
+      properties:
+        _id:
+          type: UUID
+          description: id del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: descripcion del producto
+        code:
+          type: string
+          description: código único del producto
+        price:
+          type: number
+          description: precio del producto en pesos argentinos
+        status:
+          type: string
+          description: default true
+        stock:
+          type: numer
+          description: cantidad del producto en stock
+        category:
+          type: string
+          description: categoría del producto
+        thumbnail:
+          type: string
+          description: ruta a la imagen del producto
+      example:
+        _id: 8f783597-aeec-42d4-8239-123d695586c3
+        title: Fuente Alimentacion Gadnic 30V 5A
+        description: Fuente de alimentación de laboratorio Gadnic 30v 5A
+        code: ACB234
+        price: 100000
+        status: true
+        stock: 20,
+        category: "Electrónica"
+        thumbnail: /images/fuente.jpg
+        owner: 9543a7b6-fe07-4447-b787-8fb4e38c0ddf
+        

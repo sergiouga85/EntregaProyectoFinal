@@ -1,4 +1,3 @@
-
 window.addEventListener('load', async () => {
   const response = await fetch('/api/users/current')
   if (response.status !== 200) {
@@ -449,6 +448,9 @@ function cancelRolChanges(userId, currentRol) {
 }
 
 
+
+
+  
 
 
   

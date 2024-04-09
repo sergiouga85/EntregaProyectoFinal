@@ -3,10 +3,8 @@ import { engine } from 'express-handlebars'
 import { PORT } from './config/config.js'
 import { apiRouter } from './routers/api/api.router.js'
 import { webRouter } from './routers/web/web.router.js'
-
 import { passportInitialize } from './middlewares/authentication.js'
 import { cookies } from './middlewares/cookies.js'
-
 
 
 
@@ -28,4 +26,6 @@ app.use('/static', express.static('./static'))
 
 app.use('/api', apiRouter)
 app.use('/', webRouter)
+
+
 

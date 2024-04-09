@@ -1,8 +1,7 @@
 import {productDao} from '../dao/index.js';
 
-export class ProductService{
-
-   static crearProducto = async (nuevoProductoData) => {
+export class ProductService {
+    static crearProducto = async (ownerId, nuevoProductoData) => {
         try {
             // Validar que el precio del nuevo producto no sea negativo
             if (nuevoProductoData.price < 0) {
@@ -10,7 +9,8 @@ export class ProductService{
             }
 
             // Luego, creas el producto usando el DAO
-            return await productDao.crearProducto(nuevoProductoData);
+            console.log(ownerId)
+            return await productDao.crearProducto(ownerId, nuevoProductoData);
         } catch (error) {
             throw new Error(`Error en el servicio de productos: ${error.message}`);
         }

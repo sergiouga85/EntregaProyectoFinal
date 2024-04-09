@@ -33,6 +33,21 @@ webRouter.get('/login', (req, res) => {
   })
 })
 
+webRouter.get('/emailResetPassword', (req, res) => {
+  res.render('email.resetPassword.handlebars', {
+    user: req.user,
+    pageTitle: 'email Password'
+  })
+})
+
+
+webRouter.get(`/api/users/resetPassword/:token`, (req, res) => {
+  const token = req.params.token;
+  // Renderizar la página Handlebars con el formulario y enviarla como respuesta
+  res.render('reset.password.handlebars', { token }); // Ajusta el nombre del archivo según tu configuración
+});
+
+
 webRouter.get('/addProducts', (req, res) => {
   res.render('addProducts.handlebars', {
     pageTitle: 'addProducts'

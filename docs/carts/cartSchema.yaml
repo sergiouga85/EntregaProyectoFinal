@@ -1,0 +1,28 @@
+components:
+  schemas:
+    carrito:
+      type: object
+      properties:
+        _id:
+          type: UUID
+          description: id del cart
+        product:
+          type: array
+          description: array de productos pertenecientes al cart
+      example:
+        _id: asd12easda
+        product: [{pid: ced276fa-a63a-4ccd-8252-2c33a2346d31, quantity: 2}, {pid: ced276fa-a63a-4ccd-8252-2c33a2346d31, quantity: 5}]
+
+  requestBody:
+    carrito:
+      type: object
+      properties:
+        _id:
+          type: UUID
+          description: id del cart
+        product:
+          type: array
+          description: array de productos pertenecientes al cart
+      example:
+        _id: asd12easda
+        product: [{pid: ced276fa-a63a-4ccd-8252-2c33a2346d31, quantity: 2}, {pid: ced276fa-a63a-4ccd-8252-2c33a2346d31, quantity: 5}]

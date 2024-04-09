@@ -1,0 +1,99 @@
+paths:
+  /api/productos:
+    get:
+      tags: 
+       - Products
+      summary: Obtiene todos los productos
+      responses:
+        "200":
+          description: Pedido ok, se obtiene el listado de productos
+        "500":
+          description: Error interno del servidor
+    post:
+      tags: 
+       - Products
+      summary: Crea un producto - Solo para Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBody/Product"
+      
+      responses:
+        "200":
+          description: Pedido ok, se crea el producto
+        "403":
+          description: No tienes permisos para realizar esta acción
+        "404":
+          description: Datos ingresados inválidos
+        "500":
+          description: Error interno del servidor
+      
+  /api/products/{id}:
+    get:
+      tags: 
+       - Product by ID
+      summary: Obtiene un producto por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del producto buscado
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se obtiene el producto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#components/schemas/Product'
+        "404":
+          description: Datos inválidos
+        "500":
+          description: Error interno del servidor
+    put:
+      tags: 
+       - Product by ID
+      summary: Actualiza el producto buscado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBody/Product"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del producto buscado
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se actualza el producto
+        "404":
+          description: Datos inválidos
+        "500":
+          description: Error interno del servidor
+    delete:
+      tags: 
+       - Product by ID
+      summary: Elimina el producto buscado
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id del producto buscado
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Pedido ok, se elimina el producto
+        "404":
+         description: Datos inválidos
+        "500":
+         description: Error interno del servidor

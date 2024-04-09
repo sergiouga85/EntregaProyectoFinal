@@ -31,7 +31,7 @@ passport.use('current', new LocalStrategy(
   (username, password, done) => {
     usersDao.findOne({ username: username }, (err, user) => {
       if (err) { return done(err); }
-      if (!user || user.rol !== 'admin' || !user.comparePassword(password)) {
+      if (!user || (user.rol !== 'admin' && user.rol !== 'premium') || !user.comparePassword(password)) {
         return done(null, false, { message: 'Credenciales inválidas o acceso no autorizado' });
       }
       return done(null, user);

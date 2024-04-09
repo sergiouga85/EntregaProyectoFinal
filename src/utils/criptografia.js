@@ -32,6 +32,7 @@ export function encriptar(data) {
   })
 }
 
+
 export function desencriptar(token) {
   return new Promise((resolve, reject) => {
     if (!token) {

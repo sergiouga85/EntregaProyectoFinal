@@ -43,5 +43,17 @@ formLogin?.addEventListener('submit', async (event) => {
   
 });
 
-
-
+document.getElementById('btnRegister').addEventListener('click', newCarrito)
+function newCarrito(e) {
+    fetch('http://localhost:8080/api/carts', {
+        method: 'POST'
+    })
+        .then(resp => resp.json())
+        .then(data => {
+            const newID = data._id
+            console.log(newID)
+            localStorage.setItem('carrito', JSON.stringify(newID))
+            window.location = '/register'
+        })
+  
+  }

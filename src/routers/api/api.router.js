@@ -8,6 +8,9 @@ import {productosRouter} from './productos.router.js'
 import { chatRouter } from './chat.router.js'
 
 
+
+
+
 export const apiRouter = Router()
 
 apiRouter.use(json())
@@ -20,8 +23,4 @@ apiRouter.use('/sessions', sessionsRouter)
 apiRouter.use('/productos', productosRouter)
 apiRouter.use('/carts', cartsRouter)
 apiRouter.use('/chat', chatRouter)
-
-
-
-
 apiRouter.use(errorHandler)

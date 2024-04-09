@@ -47,7 +47,7 @@ export const actualizarCantidadProductoEnCarrito = async (req, res) => {
     }
 
     // Llamar al servicio para actualizar la cantidad
-    const productoActualizado = await cartService.actualizarCantidadProductoEnCarrito(cid, pid, cantidadNumerica);
+    const productoActualizado = await CartService.actualizarCantidadProductoEnCarrito(cid, pid, cantidadNumerica);
     res.status(201).json({ message: 'Producto Actualizado en el Carrito', info: productoActualizado });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -58,7 +58,7 @@ export const actualizarCantidadProductoEnCarrito = async (req, res) => {
 // Añadir un producto al carrito o incrementar la cantidad si ya existe
 export const agregarProductoAlCarrito = async (req, res) => {
   try {
-    const producto = await cartDao.agregarProductoAlCarrito(req.params.cid, req.params.pid);
+    const producto = await cartDao.agregarProductoAlCarrito(req.params.cid, req.params.pid, req.user._id);
     res.status(201).json({ message: 'Producto Agregado', info: producto });
   } catch (error) {
     res.status(500).json({ message: error.message });
