@@ -11,4 +11,4 @@ productosRouter.get('/cat/', obtenerCategorias);
 productosRouter.get('/:pid', obtenerProductoPorId);
 productosRouter.post('/', passportAuth,premiumOnly, crearProducto);
 productosRouter.put('/:pid',passportAuth,premiumOnly, actualizarProducto);
-productosRouter.delete('/:pid', passportAuth,premiumOnly, eliminarProducto);
+productosRouter.delete('/:pid', passportAuth,adminsOnly, eliminarProducto);

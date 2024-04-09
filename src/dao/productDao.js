@@ -138,6 +138,8 @@ export class ProductDao {
         }
       }
 
+    /*
+
     // Eliminar un producto por ID
     async eliminarProducto(productoId, usuarioId) {
         try {
@@ -164,6 +166,22 @@ export class ProductDao {
                 throw new Error('No tienes permisos para modificar este producto');
             }
     
+            const delProducto = await Producto.findByIdAndDelete(productoId);
+    
+            if (!delProducto) {
+                throw new Error(`El producto con id ${productoId} no se encontró`);
+            }
+    
+            return delProducto;
+        } catch (error) {
+            throw new Error(`Error al eliminar el producto por ID: ${error.message}`);
+        }
+    }
+
+    */
+
+    async eliminarProducto(productoId) {
+        try {
             const delProducto = await Producto.findByIdAndDelete(productoId);
     
             if (!delProducto) {

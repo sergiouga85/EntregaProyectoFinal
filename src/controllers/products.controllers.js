@@ -1,5 +1,7 @@
 import {productDao} from '../dao/index.js';
 import  {ProductService} from '../services/product.service.js';
+import { usersDao } from '../dao/index.js';
+import {emailService} from '../services/email.service.js'
 
 // Obtener todos los productos paginados
 
@@ -96,13 +98,13 @@ export const actualizarProducto = async (req, res) => {
     }
 };
 
-
+/*
 // Eliminar un producto por ID
 export const eliminarProducto = async (req, res) => {
     try {
         const productoId = req.params.pid;
-        const usuarioId= req.user._id; // Suponiendo que tienes la información del usuario en el objeto req.user
-        
+        const usuarioId = req.user._id; // Suponiendo que tienes la información del usuario en el objeto req.user
+
         // Llama al DAO para eliminar el producto con las restricciones
         const delProducto = await productDao.eliminarProducto(productoId, usuarioId);
 
@@ -111,6 +113,42 @@ export const eliminarProducto = async (req, res) => {
     } catch (error) {
         // Maneja los errores y envía una respuesta adecuada al cliente
         res.status(500).json({ message: error.message });
+    }
+};
+*/
+
+// Eliminar un producto por ID
+export const eliminarProducto = async (req, res) => {
+    try {
+        const productoId = req.params.pid;
+        console.log(productoId)    
+
+        // Verificar si el propietario del producto es un usuario premium
+        const propietario = await usersDao.obtenerPropietarioProducto(productoId);
+
+        // Eliminar el producto
+        const delProducto = await productDao.eliminarProducto(productoId);
+
+        console.log(propietario)
+        if (propietario && propietario.rol === 'premium') {
+            // Enviar correo electrónico al propietario premium
+            const emailSent = await emailService.send(
+                propietario.email,
+                'Producto eliminado',
+                `Hola ${propietario.username}, tu producto ha sido eliminado.`
+            );
+
+            if (!emailSent) {
+                console.error('Error al enviar correo electrónico al propietario premium');
+                // Puedes manejar el error de envío de correo electrónico aquí
+                // Por ejemplo, enviar una respuesta al cliente indicando que el correo no se pudo enviar
+            }
+        }
+
+        res.json(delProducto);
+    } catch (error) {
+        console.error('Error al eliminar producto:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 

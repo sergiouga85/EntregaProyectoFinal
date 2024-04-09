@@ -133,7 +133,9 @@ function addProduct() {
         icon: "success",
         color: "write",
       });
-      location.reload()
+      setTimeout(() => {
+        window.location.href = '/addProducts';
+      },'3000');
     })
     .catch(error => {
       console.error('Error al agregar el producto:', error);
@@ -327,6 +329,7 @@ function setFilters(e, page) {
 
 async function deleteProduct(e) {
   const idProducto = e.target.id
+  console.log(idProducto)
 
   if (!idProducto) { return }
   const rutaFetch = `http://localhost:8080/api/productos/${idProducto}`
@@ -343,7 +346,9 @@ async function deleteProduct(e) {
       icon: "success",
       color: "write"
     });
-    location.reload()
+    setTimeout(() => {
+      window.location.href = '/addProducts';
+    },'1000');
 
   } else {
     Swal.fire({
@@ -371,7 +376,9 @@ async function deleteInactiveUsers() {
         icon: 'success',
         color: 'write'
       });
-      location.reload();
+      setTimeout(() => {
+        window.location.href = '/addProducts';
+      },'3000');
     } else {
       throw new Error('Error al eliminar usuarios inactivos');
     }

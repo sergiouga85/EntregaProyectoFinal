@@ -88,7 +88,9 @@ window.addEventListener('load', async () => {
           icon: "success",
           color: "write",
         });
-        //location.reload()
+        setTimeout(() => {
+          window.location.href = '/userPremium';
+        },'1000');
       })
       .catch(error => {
         console.error('Error al agregar el producto:', error);
