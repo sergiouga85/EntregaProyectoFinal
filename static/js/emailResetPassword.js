@@ -1,7 +1,7 @@
-async function emailResetPassword() {
+/*async function emailResetPassword() {
     const email = document.getElementById('email').value;
 
-    /*const response = await fetch('/api/users/current')
+    const response = await fetch('/api/users/current')
     if (response.status !== 200) {
       alert('necesitas loguearte para ver esta info!')
       return (window.location.href = '/login')
@@ -23,7 +23,7 @@ async function emailResetPassword() {
     
     // Hacer una solicitud al backend con el nuevo password
 
-    await fetch(`http://localhost:8080/api/users/forgotPassword`, {
+    await fetch(`/api/users/forgotPassword`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

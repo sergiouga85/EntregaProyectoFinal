@@ -1,7 +1,7 @@
 async function sendMessage() {
 
   
-    const res = await fetch('http://localhost:8080/api/sessions/current',
+    const res = await fetch('/api/sessions/current',
     {
       method:'GET'
     })
@@ -25,7 +25,7 @@ async function sendMessage() {
 
   // Realizar una solicitud de fetch para agregar el mensaje
   try {
-    const response = await fetch('http://localhost:8080/api/chat/mensaje', {
+    const response = await fetch('/api/chat/mensaje', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

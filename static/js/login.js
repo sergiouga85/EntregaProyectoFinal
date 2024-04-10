@@ -45,7 +45,7 @@ formLogin?.addEventListener('submit', async (event) => {
 
 document.getElementById('btnRegister').addEventListener('click', newCarrito)
 function newCarrito(e) {
-    fetch('http://localhost:8080/api/carts', {
+    fetch('/api/carts', {
         method: 'POST'
     })
         .then(resp => resp.json())

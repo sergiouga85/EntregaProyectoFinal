@@ -22,7 +22,7 @@ window.addEventListener('load', async () => {
     const activeCart = JSON.parse(localStorage.getItem('carrito'))
     if (!idProducto) { return }
     if (!activeCart) { return alert('No hay carrito seleccionado') }
-    const rutaFetchPut = `http://localhost:8080/api/carts/${activeCart}/add/${idProducto}` // /:cid/add/:pid
+    const rutaFetchPut = `/api/carts/${activeCart}/add/${idProducto}` // /:cid/add/:pid
     fetch (rutaFetchPut, {
         method: "PUT",
         headers: {
@@ -73,7 +73,7 @@ window.addEventListener('load', async () => {
     };
   
     // Realizar una solicitud de fetch para agregar el producto
-    fetch('api/productos', {
+    fetch('/api/productos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ window.addEventListener('load', async () => {
   }
   
   function prepareFront() {
-    fetch('http://localhost:8080/api/productos/cat/')
+    fetch('/api/productos/cat/')
       .then(resp => resp.json())
       .then(data => {
         const targetCombo = document.getElementById('comboCategorias')
@@ -285,7 +285,7 @@ window.addEventListener('load', async () => {
     const idProducto = e.target.id
   
     if (!idProducto) { return }
-    const rutaFetch = `http://localhost:8080/api/productos/${idProducto}`
+    const rutaFetch = `/api/productos/${idProducto}`
     const res = await fetch(rutaFetch,
       {
         method: "DELETE",

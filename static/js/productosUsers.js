@@ -1,4 +1,4 @@
-const rutaFetch = 'http://localhost:8080/api/productos/'
+const rutaFetch = '/api/productos/'
 const qryFetch = {
     limite: 10,
     pagina: 1,
@@ -110,7 +110,7 @@ function pageMove(e) {
 }
 
 function prepareFront() {
-    fetch('http://localhost:8080/api/productos/cat/')
+    fetch('/api/productos/cat/')
         .then(resp => resp.json())
         .then(data => {
             const targetCombo = document.getElementById('comboCategorias')
@@ -178,7 +178,7 @@ function addProduct(e) {
     const activeCart = JSON.parse(localStorage.getItem('carrito'))
     if (!idProducto) { return }
     if (!activeCart) { return alert('No hay carrito seleccionado') }
-    const rutaFetchPut = `http://localhost:8080/api/carts/${activeCart}/add/${idProducto}` // /:cid/add/:pid
+    const rutaFetchPut = `/api/carts/${activeCart}/add/${idProducto}` // /:cid/add/:pid
     fetch (rutaFetchPut, {
         method: "PUT",
         headers: {
@@ -215,7 +215,7 @@ buttonLogout?.addEventListener('click', async event => {
 
   try {
     const res = await fetch(
-      'http://localhost:8080/api/sessions/current',
+      '/api/sessions/current',
       {
         method: 'DELETE',
       },

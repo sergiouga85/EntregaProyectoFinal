@@ -1,13 +1,10 @@
-const rutaFetch = 'http://localhost:8080/api/carts'
-const rutaFetchNewCarrito = 'http://localhost:8080/api/carts'
-
 document.getElementById('newCarrito').addEventListener('click', newCarrito)
 
 loadCarritos()
 
 function loadCarritos() {
 
-    fetch(rutaFetch)
+    fetch('/api/carts')
         .then(resp => resp.json())
         .then(data => {
             const targetDOM = document.getElementById('listaCarritos')
@@ -53,7 +50,7 @@ async function newCarrito(e) {
 
   try {
 
-    const res = await fetch('http://localhost:8080/api/sessions/current',
+    const res = await fetch('/api/sessions/current',
       {
         method: 'GET'
       })
@@ -67,7 +64,7 @@ async function newCarrito(e) {
     const user = usuario.username
     console.log(user)
 
-    const response = await fetch('http://localhost:8080/api/carts', {
+    const response = await fetch('/api/carts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

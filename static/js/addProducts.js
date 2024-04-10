@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
   });*/
 })
 
-const rutaFetchUsers = 'http://localhost:8080/api/users/'
+const rutaFetchUsers = '/api/users/'
 const qryFetchUsers = {
   limite: 10,
   pagina: 1,
@@ -171,7 +171,7 @@ buttonLogout?.addEventListener('click', async event => {
 })
 
 
-const rutaFetch = 'http://localhost:8080/api/productos/'
+const rutaFetch = '/api/productos/'
 const qryFetch = {
   limite: 10,
   pagina: 1,
@@ -264,7 +264,7 @@ function pageMove(e) {
 }
 
 function prepareFront() {
-  fetch('http://localhost:8080/api/productos/cat/')
+  fetch('/api/productos/cat/')
     .then(resp => resp.json())
     .then(data => {
       const targetCombo = document.getElementById('comboCategorias')
@@ -332,7 +332,7 @@ async function deleteProduct(e) {
   console.log(idProducto)
 
   if (!idProducto) { return }
-  const rutaFetch = `http://localhost:8080/api/productos/${idProducto}`
+  const rutaFetch = `/api/productos/${idProducto}`
   const res = await fetch(rutaFetch,
     {
       method: "DELETE",
@@ -366,7 +366,7 @@ document.getElementById('btnDelete').addEventListener('click', deleteInactiveUse
 
 async function deleteInactiveUsers() {
   try {
-    const res = await fetch('http://localhost:8080/api/users', {
+    const res = await fetch('/api/users', {
       method: 'DELETE'
     });
 
@@ -418,7 +418,7 @@ function saveRolChanges(userId) {
   };
   console.log(data)
 
-  fetch('http://localhost:8080/api/users/modifyUserRol/', {
+  fetch('/api/users/modifyUserRol/', {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
