@@ -188,6 +188,7 @@ async function compra() {
         confirmButtonText: 'Aceptar',
       }).then((result) => {
         if (result.isConfirmed) {
+          deleteCart(cartId )
           window.location.href = './productos'
         }
       });

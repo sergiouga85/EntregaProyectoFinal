@@ -194,6 +194,7 @@ function addProduct(e) {
                 icon: "success",
                 color: "write"
               });
+              window.location.href = '/carritos'
         } else if (data.message === 'Producto Actualizado') {
             Swal.fire({
                 title: "Producto actualizado!",
