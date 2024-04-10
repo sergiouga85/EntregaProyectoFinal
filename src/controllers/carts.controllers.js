@@ -47,7 +47,7 @@ export const actualizarCantidadProductoEnCarrito = async (req, res) => {
     }
 
     // Llamar al servicio para actualizar la cantidad
-    const productoActualizado = await CartService.actualizarCantidadProductoEnCarrito(cid, pid, cantidadNumerica);
+    const productoActualizado = await cartService.actualizarCantidadProductoEnCarrito(cid, pid, cantidadNumerica);
     res.status(201).json({ message: 'Producto Actualizado en el Carrito', info: productoActualizado });
   } catch (error) {
     res.status(500).json({ message: error.message });

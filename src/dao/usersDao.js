@@ -13,7 +13,16 @@ const schema = new Schema({
   age: { type: Number, required: true },
   password: { type: String, required: true },
   rol: { type: String, default: 'user' },
-  lastConnection: { type: Date, default: Date.now } 
+  lastConnection: { type: Date, default: Date.now },
+  orders: {
+    type: [
+      {
+        type: String,
+        ref: 'orders'
+      }
+    ],
+    default: []
+  } 
 }, {
   versionKey: false,
   strict: 'throw'
@@ -56,6 +65,37 @@ export class usersDAO  {
     const result = await usersModel.findOne(criteria).lean()
     if (!result) throw new Error('NOT FOUND')
     return result
+  }
+
+  async readMany(criteria) {
+    return await usersModel
+      .find(criteria)
+      .populate('orders')
+      .lean()
+  }
+
+  async updateOne(criteria, newData) {
+    const modifiedUser = await usersModel
+      .findOneAndUpdate(criteria, newData, { new: true })
+      .populate('orders')
+      .lean()
+
+    if (!modifiedUser) throw new Error('NOT FOUND')
+    return modifiedUser
+  }
+
+  updateMany(criteria, newData) {
+    return Promise.reject(new Error('NOT IMPLEMENTED: usersDao::updateMany'))
+  }
+
+  async deleteOne(criteria) {
+    const deletedUser = await usersModel
+      .findOneAndDelete(criteria)
+      .populate('orders')
+      .lean()
+
+    if (!deletedUser) throw new Error('NOT FOUND')
+    return deletedUser
   }
 
 
