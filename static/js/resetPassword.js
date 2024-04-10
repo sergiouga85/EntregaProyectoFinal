@@ -12,7 +12,7 @@ function resetPassword() {
 
     // Hacer una solicitud al backend con el nuevo password
 
-    fetch(`http://localhost:8080/api/users/resetPassword/${token}`, {
+    fetch(`/api/users/resetPassword/${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

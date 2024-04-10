@@ -1,5 +1,5 @@
 const idCarrito = JSON.parse(localStorage.getItem('carrito'))
-const rutaFetch = 'http://localhost:8080/api/carts/'
+const rutaFetch = '/api/carts/'
 document.getElementById('delCarrito').addEventListener('click', deleteCart)
 
 getCarritoInfo()
